@@ -39,7 +39,7 @@ DataAccess.prototype.get = function(stored,params,callback){
       // request.output('output_parameter', sql.VarChar(50));
       request.execute(stored, function(err, recordsets, returnValue) {
         if(recordsets != null){
-          callback(err, recordsets[0]);
+          callback(err, recordsets);
         }
         else{
           console.log('Error al obtener datos para el usuario: ' + params + ' mensaje: ' + err);
@@ -72,26 +72,5 @@ DataAccess.prototype.post = function (objParams, callback) {
     });
 };
 
-//método post
-DataAccess.prototype.postCitaServicioDetalle = function (objParams, callback) {
-    var self = this.connection;
-    this.connection.connect(function (err) {
-        // Stored Procedure 
-        var request = new sql.Request(self);
-        request.input('idCita', sql.Numeric(18, 0), objParams.idCita);
-        request.input('idTipoElemento', sql.Numeric(18, 0), objParams.idTipoElemento);
-        request.input('idElemento', sql.Numeric(18, 0), objParams.idElemento);
-        request.input('cantidad', sql.Numeric(18, 0), objParams.cantidad);
-
-        request.execute('INS_CITA_SERVICIO_DETALLE_SP', function (err, recordsets, returnValue) {
-            if (recordsets != null) {
-                callback(err, recordsets[0]);
-            } else {
-                console.log('Error al realizacion la insercción: ' + params + ' mensaje: ' + err);
-            }
-        });
-
-    });
-};
 
 module.exports = DataAccess; 
